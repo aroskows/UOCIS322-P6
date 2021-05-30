@@ -4,14 +4,14 @@ services:
   restapi:
     build: ./api
     ports:
-      - 5001:5000
+      - 5879:5000
 
   website:
     image: php:apache
     volumes:
       - ./website:/var/www/html
     ports:
-      - 5000:80
+      - 5878:80
     depends_on:
       - restapi
     environment:
