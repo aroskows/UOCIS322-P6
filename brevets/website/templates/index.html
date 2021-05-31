@@ -31,7 +31,19 @@
 	        function(e){
 		     e.preventDefault();
 		     console.log("list all clicked");
-		     
+		     var topk = $("input[name='top']").val();
+                     console.log(topk);
+                     var dtype = document.getElementById('dtype').value;
+                     console.log(dtype);
+                     //var url = window.location.href;
+                     //console.log(url);
+                     $.getJSON( (SCRIPT_ROOT + "/listeverything"), {topk: topk, dtype: dtype}).done(
+
+                        function(data) {
+                                console.log(data)
+                                document.write(data.result)
+                });
+
 		     // go get the information from the database
 		    // print the  data from the database
 		}
@@ -39,6 +51,18 @@
                 function(e){
                      e.preventDefault();
                      console.log("list open clicked");
+                     var topk = $("input[name='top']").val();
+                     console.log(topk);
+                     var dtype = document.getElementById('dtype').value;
+                     console.log(dtype);
+                     //var url = window.location.href;
+                     //console.log(url);
+                     $.getJSON( (SCRIPT_ROOT + "/listopentimes"), {topk: topk, dtype: dtype}).done(
+
+                        function(data) {
+                                console.log(data)
+                                document.write(data.result)
+                });
 
                      // go get the information from the database
                     // print the  data from the database
@@ -56,7 +80,9 @@
 		     $.getJSON( (SCRIPT_ROOT + "/listclosetimes"), {topk: topk, dtype: dtype}).done(
 			     
 			function(data) {
-			});
+				console.log(data)
+				document.write(data.result)
+		});
 
                      // go get the information from the database
                     // print the  data from the database

@@ -1,5 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import requests
+import flask
+import json
 
 app = Flask(__name__)
 
@@ -12,20 +14,24 @@ def home():
 @app.route('/listeverything')
 def listeverything():
     ''' these ports might be wrong ?'''
-    r = requests.get('http://restapi:5000/listAll')
-    return r.text
+    dtype = request.args.get("dtype")
+    r = requests.get('http://restapi:5000/listAll/' + dtype)
+    return flask.jsonify({"result": r.text})
 
 @app.route('/listopentimes')
 def listopentimes():
-    r = requests.get('http://restapi:5000/listOpen')
-    return r.text
+    dtype = request.args.get("dtype")
+    r = requests.get('http://restapi:5000/listOpen/' + dtype)
+    return flask.jsonify({"result": r.text})
 
 @app.route('/listclosetimes')
 def listclosetimes():
-    app.logger.debug("website")
-    r = requests.get('http://128.223.8.30:5974/listClose')
+    dtype = request.args.get("dtype")
+    topk = request.args.get("topk")
+    r = requests.get('http://restapi:5000/listClose/' + dtype) 
     app.logger.debug(r)
-    return r.text
+    
+    return flask.jsonify({"result": r.text})
 
 
 if __name__ == '__main__':

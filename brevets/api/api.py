@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Resource, Api
 from pymongo import MongoClient
 import json
@@ -31,47 +31,92 @@ for i in mydata:
 
 class listAll(Resource):
     def get(self, dtype):
-        topnum = request.args.get('top', default=-1)
-        app.logger("ALL")
-        if dtype == "CSV":
+        app.logger.debug("ALL")
+        app.logger.debug(dtype)
+        all_times_list = []
+        for i in mydata:
+            # i is an dictionary with km, open times, and close times
+            #open_times_list.append(str(i['open_time']))
+            #close_times_list.append(str(i['close_time']))
+            temp = [str(i['open_time']), str(i['close_time'])]
+            all_times_list.append(temp)
+
+        app.logger.debug(dtype)
+        if dtype == "CSV" or dtype == "V":
             #return in CSV form?
-            csv_all = ""
+
+            csv_all = ''
+            counter = 0
             for i in all_times_list:
                 csv_all += ", ".join(i)
                 csv_all += "  "
+                counter += 1
+            #    if counter >= topk:
+             #       break
+            return csv_all
 
 
 
-            pass
+            
         else:
             #return in json form
-            pass
+            result = {
+                    'json_all': all_times_list
+                    }
+            return json.dumps(result)
     
 
 class listOpen(Resource):
     def get(self, dtype):
-        app.logger("OPEN")
-        topnum = request.args.get('top', default=-1)
+        app.logger.debug("OPEN")
+        #topnum = request.args.get('top', default=-1)
+        open_times_list = []
+        for i in mydata:
+            # i is an dictionary with km, open times, and close times
+            open_times_list.append(str(i['open_time']))
 
-        if dtype == "CSV":
-            csv_close = ", ".join(open_times_list)
-            pass
+
+        if dtype == "CSV" or dtype == "V": 
+            csv_open = ", ".join(open_times_list)
+            return csv_open
         else:
             #return in json form
-            pass
+            result = {
+                    'json_open': open_times_list
+                    }
+            return json.dumps(result)
 
 
 class listClose(Resource):
-    def get(self, topk, dtype):
-        #print("hello")
+    def get(self, dtype, topk):
+        #print("hello")       
+        
         app.logger.debug("CLOSE")
-        topnum = request.args.get('top', default=-1)
-        if dtype == "CSV":
+        #app.logger.debug(topk)
+        #topnum = request.args.get('top', default=-1)
+        #dtype = request.args.get('dtype')
+        app.logger.debug(dtype)
+        counter = 0
+        close_times_list = []
+        for i in mydata:
+            # i is an dictionary with km, open times, and close times
+            counter += 1
+            app.logger.debug(counter)
+            app.logger.debug(topk)
+           # if counter >= int(topk):
+            #    break
+            close_times_list.append(str(i['close_time']))
+
+        if dtype == "CSV" or dtype == "V":
+            
             csv_close = ", ".join(close_times_list)
-            return 
+            return csv_close
         else:
             #return in json form
-            return [1, 2, 3]
+            result = {
+                    'json_close': close_times_list
+                    }
+            return json.dumps(result)
 
 '''@app.route('/listClose'):
     def listClose(topk, dtype):
