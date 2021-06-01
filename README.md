@@ -20,7 +20,10 @@ My folder brevetsapp/ all the files are not there instead they are in another
 nested folder (brevetsapp/brevets/). my doecker-compose.yml reflects this.
 
 The urls work if they use the port for the restapi. also they url format is:
+
 /listOpen/JSON/top
+
 /listClose/CSV/top
 
-where top is just the number of the times you want to see
+where top is just the number of the times you want to see and assumming that the port is
+the port of the resting api
