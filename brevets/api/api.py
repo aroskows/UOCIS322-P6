@@ -12,17 +12,17 @@ api = Api(app)
 client = MongoClient('mongodb://' + os.environ['MONGODB_HOSTNAME'], 27017)
 db = client.tododb
 
-mydata = list(db.tododb.find())
+#mydata = list(db.tododb.find())
 #print(mydata)
-open_times_list = []
-close_times_list = []
-all_times_list = []
-for i in mydata:
+#open_times_list = []
+#close_times_list = []
+#all_times_list = []
+#for i in mydata:
     # i is an dictionary with km, open times, and close times
-    open_times_list.append(str(i['open_time'])) 
-    close_times_list.append(str(i['close_time']))
-    temp = [str(i['open_time']), str(i['close_time'])]
-    all_times_list.append(temp) 
+#    open_times_list.append(str(i['open_time'])) 
+#    close_times_list.append(str(i['close_time']))
+#    temp = [str(i['open_time']), str(i['close_time'])]
+#    all_times_list.append(temp) 
 
 
    # print("km =", i['km'])
@@ -30,14 +30,20 @@ for i in mydata:
 #print(mykeys)
 
 class listAll(Resource):
-    def get(self, dtype):
+    def get(self, dtype, topk):
+        mydata = list(db.tododb.find())
         app.logger.debug("ALL")
         app.logger.debug(dtype)
+        app.logger.debug(topk)
         all_times_list = []
+        counter = 0
         for i in mydata:
             # i is an dictionary with km, open times, and close times
             #open_times_list.append(str(i['open_time']))
             #close_times_list.append(str(i['close_time']))
+            counter += 1
+            if counter > int(topk) and topk != "-1":
+                break
             temp = [str(i['open_time']), str(i['close_time'])]
             all_times_list.append(temp)
 
@@ -67,12 +73,17 @@ class listAll(Resource):
     
 
 class listOpen(Resource):
-    def get(self, dtype):
+    def get(self, dtype, topk):
+        mydata = list(db.tododb.find())
         app.logger.debug("OPEN")
         #topnum = request.args.get('top', default=-1)
         open_times_list = []
+        counter = 0
         for i in mydata:
             # i is an dictionary with km, open times, and close times
+            counter += 1
+            if counter > int(topk) and topk != "-1":
+                break
             open_times_list.append(str(i['open_time']))
 
 
@@ -90,21 +101,24 @@ class listOpen(Resource):
 class listClose(Resource):
     def get(self, dtype, topk):
         #print("hello")       
+        mydata = list(db.tododb.find())
         
         app.logger.debug("CLOSE")
         #app.logger.debug(topk)
         #topnum = request.args.get('top', default=-1)
         #dtype = request.args.get('dtype')
         app.logger.debug(dtype)
+        app.logger.debug(topk)
         counter = 0
         close_times_list = []
         for i in mydata:
             # i is an dictionary with km, open times, and close times
             counter += 1
+            app.logger.debug("loop")
             app.logger.debug(counter)
             app.logger.debug(topk)
-           # if counter >= int(topk):
-            #    break
+            if counter > int(topk) and (topk != '-1'):
+                break
             close_times_list.append(str(i['close_time']))
 
         if dtype == "CSV" or dtype == "V":
@@ -125,9 +139,9 @@ class listClose(Resource):
             app.logger.debug("json")
         return 1 '''
 
-api.add_resource(listAll, '/listAll/<dtype>')
-api.add_resource(listOpen, '/listOpen/<dtype>')
-api.add_resource(listClose, '/listClose/<topk><dtype>')
+api.add_resource(listAll, '/listAll/<dtype>/<topk>')
+api.add_resource(listOpen, '/listOpen/<dtype>/<topk>')
+api.add_resource(listClose, '/listClose/<dtype>/<topk>')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)

@@ -19,4 +19,5 @@ of times that are displayed.
 My folder brevetsapp/ all the files are not there instead they are in another
 nested folder (brevetsapp/brevets/). my doecker-compose.yml reflects this.
 
-currently the input box for the limitter does not work :(
+I do the button pressing logic similiarly to how we did the submit and display
+from project 5. so the urls do not work

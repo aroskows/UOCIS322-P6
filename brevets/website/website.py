@@ -14,21 +14,33 @@ def home():
 @app.route('/listeverything')
 def listeverything():
     ''' these ports might be wrong ?'''
-    dtype = request.args.get("dtype")
-    r = requests.get('http://restapi:5000/listAll/' + dtype)
+    dtype = request.args.get("dtype") 
+    topk = request.args.get("topk").strip()
+    if topk == "":
+        topk = "-1"
+
+    r = requests.get('http://restapi:5000/listAll/' + dtype + "/" + topk)
     return flask.jsonify({"result": r.text})
 
 @app.route('/listopentimes')
 def listopentimes():
-    dtype = request.args.get("dtype")
-    r = requests.get('http://restapi:5000/listOpen/' + dtype)
+    dtype = request.args.get("dtype") 
+    topk = request.args.get("topk").strip()
+    if topk == "":
+        topk = "-1"
+
+    r = requests.get('http://restapi:5000/listOpen/' + dtype + "/" + topk)
     return flask.jsonify({"result": r.text})
 
 @app.route('/listclosetimes')
 def listclosetimes():
     dtype = request.args.get("dtype")
-    topk = request.args.get("topk")
-    r = requests.get('http://restapi:5000/listClose/' + dtype) 
+    topk = request.args.get("topk").strip()
+    if topk == "":
+        topk = "-1"
+    app.logger.debug(type(topk))
+    app.logger.debug(topk)
+    r = requests.get('http://restapi:5000/listClose/' + dtype + "/" + topk) 
     app.logger.debug(r)
     
     return flask.jsonify({"result": r.text})

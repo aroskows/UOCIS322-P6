@@ -5,7 +5,7 @@
           integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
           crossorigin="anonymous"></script>
    </head>
-   
+    
    	<br> 
    	<button id="listall"> List All </button>
    	<button id="listopen"> List Open Times </button>
@@ -22,14 +22,14 @@
 
    	<label for="top"> Top Number of Amounts: </label>
    	<input type="number" id="top" name="top"> <br>
-    
+   
 
    <script>
 	   var SCRIPT_ROOT = {{ request.script_root|tojson|safe }} ;
 
 	   $('#listall').click(
 	        function(e){
-		     e.preventDefault();
+		     //e.preventDefault();
 		     console.log("list all clicked");
 		     var topk = $("input[name='top']").val();
                      console.log(topk);
@@ -49,7 +49,7 @@
 		}
 	   ); $('#listopen').click(
                 function(e){
-                     e.preventDefault();
+                     //e.preventDefault();
                      console.log("list open clicked");
                      var topk = $("input[name='top']").val();
                      console.log(topk);
@@ -69,7 +69,7 @@
                 }
            ); $('#listclose').click(
                 function(e){
-                    // e.preventDefault();
+                     //e.preventDefault();
                      console.log("list close clicked");
 		     var topk = $("input[name='top']").val();
 		     console.log(topk);
