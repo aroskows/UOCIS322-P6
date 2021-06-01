@@ -19,5 +19,8 @@ of times that are displayed.
 My folder brevetsapp/ all the files are not there instead they are in another
 nested folder (brevetsapp/brevets/). my doecker-compose.yml reflects this.
 
-I do the button pressing logic similiarly to how we did the submit and display
-from project 5. so the urls do not work
+The urls work if they use the port for the restapi. also they url format is:
+/listOpen/JSON/top
+/listClose/CSV/top
+
+where top is just the number of the times you want to see
